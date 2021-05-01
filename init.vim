@@ -1,16 +1,18 @@
 " plugins
 let need_to_install_plugins = 0
 
+let uname = substitute(system('uname'), '\n', '', '')
+" Example values: Linux, Darwin, MINGW64_NT-10.0, MINGW32_NT-6.1
 
-if has('win32')
-  if empty(glob('~/AppData/Local/nvim/autoload/plug.vim'))
-      silent !curl -fLo ~/AppData/Local/nvim/autoload/plug.vim --create-dirs
+if uname == 'Linux' || uname == 'Darwin'
+  if empty(glob('~/.config/nvim/autoload/plug.vim'))
+      silent !curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs
           \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
       let need_to_install_plugins = 1
   endif
 else
-  if empty(glob('~/.config/nvim/autoload/plug.vim'))
-      silent !curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs
+  if empty(glob('~/AppData/Local/nvim/autoload/plug.vim'))
+      silent !curl -fLo ~/AppData/Local/nvim/autoload/plug.vim --create-dirs
           \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
       let need_to_install_plugins = 1
   endif
@@ -54,7 +56,12 @@ filetype plugin on
 filetype plugin indent on
 syntax on
 
-call plug#begin('~/AppData/Local/nvim/plugged')
+if uname == 'Linux' || uname == 'Darwin'
+  call plug#begin('~/.config/nvim/plugged')
+else
+  call plug#begin('~/AppData/Local/nvim/plugged')
+endif
+
 Plug 'ambv/black'
 Plug 'gruvbox-community/gruvbox'
 Plug 'dense-analysis/ale'

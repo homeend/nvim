@@ -1,3 +1,21 @@
+" plugins
+let need_to_install_plugins = 0
+
+
+if has('win32')
+  if empty(glob('~/AppData/Local/nvim/autoload/plug.vim'))
+      silent !curl -fLo ~/AppData/Local/nvim/autoload/plug.vim --create-dirs
+          \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+      let need_to_install_plugins = 1
+  endif
+else
+  if empty(glob('~/.config/nvim/autoload/plug.vim'))
+      silent !curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs
+          \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+      let need_to_install_plugins = 1
+  endif
+endif
+
 set nocompatible
 set tabstop=4 softtabstop=4
 set shiftwidth=4
@@ -7,7 +25,6 @@ set exrc
 set guicursor=
 set relativenumber
 set nu
-"set nohlsearch
 set hlsearch
 set hidden
 set noerrorbells
@@ -45,7 +62,6 @@ Plug 'scrooloose/nerdtree'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'preservim/nerdcommenter'
-"Plug 'liuchengxu/vista.vim'
 Plug 'jiangmiao/auto-pairs'
 Plug 'jeetsukumaran/vim-pythonsense'
 Plug 'sheerun/vim-polyglot'
@@ -54,6 +70,7 @@ Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-surround'
 Plug 'ap/vim-buftabline'
 Plug 'wellle/targets.vim'
+
 Plug 'itchyny/lightline.vim' " bottom status bar
 
 Plug 'Xuyuanp/nerdtree-git-plugin'
@@ -70,19 +87,28 @@ Plug 'Vimjas/vim-python-pep8-indent'
 Plug 'python-mode/python-mode', { 'for': 'python', 'branch': 'develop'  }
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'   }
 Plug 'junegunn/vim-peekaboo'
-"Plug 'tpope/vim-fugitive'
+
 " leader t - overview window
 Plug 'majutsushi/tagbar' 
-"Plug 'vim-airline/vim-airline'
-"Plug 'vim-airline/vim-airline-themes'
+
 Plug 'lepture/vim-jinja'
 Plug 'pangloss/vim-javascript'
 Plug 'alvan/vim-closetag'
 Plug 'liuchengxu/vim-which-key'
 Plug 'justinmk/vim-sneak'
+
+" list of recently opened files
 Plug 'mhinz/vim-startify'
 
 call plug#end()
+
+" install plugin if plugin dir dosen't exists
+if need_to_install_plugins == 1
+    echo "Installing plugins..."
+    silent! PlugInstall
+    echo "Done!"
+    q
+endif
 
 imap kj <ESC>
 colorscheme gruvbox
@@ -224,12 +250,12 @@ endfunction
 inoremap <special> <expr> <Esc>[200~ XTermPasteBegin()
 
 
-
 " tab navigation: Alt or Ctrl+Shift may not work in terminal:
 " http://vim.wikia.com/wiki/Alternative_tab_navigation
 " move to the previous/next tabpage.
 nnoremap <C-j> gT
 nnoremap <C-k> gt
+
 " Go to last active tab 
 au TabLeave * let g:lasttab = tabpagenr()
 nnoremap <silent> <c-l> :exe "tabn ".g:lasttab<cr>
@@ -257,8 +283,9 @@ augroup END
 
 " vim which key
 nnoremap <silent> <leader> :WhichKey '<Space>'<CR>
-nnoremap <silent> <localleader> :WhichKey '\\'<CR>
 vnoremap <silent> <leader> :WhichKeyVisual '<Space>'<CR>
+nnoremap <silent> <localleader> :WhichKey '\\'<CR>
+vnoremap <silent> <localleader> :WhichKeyVisual '\\'<CR>
 
 " sneak
 let g:sneak#label = 1

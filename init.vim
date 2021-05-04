@@ -57,26 +57,37 @@ filetype plugin indent on
 syntax on
 
 if uname == 'Linux' || uname == 'Darwin'
+    let g:python3_host_prog = '~/pynvim/.venv/bin/python'
+else
+    let g:python3_host_prog = '~/pynvim/.venv/Scripts/python'
+endif
+
+let g:loaded_python_provider = 0
+
+if uname == 'Linux' || uname == 'Darwin'
   call plug#begin('~/.config/nvim/plugged')
 else
   call plug#begin('~/AppData/Local/nvim/plugged')
 endif
 
+Plug 'joshdick/onedark.vim'
 Plug 'ambv/black'
-Plug 'gruvbox-community/gruvbox'
+Plug 'joshdick/onedark.vim'
 Plug 'dense-analysis/ale'
 Plug 'scrooloose/nerdtree'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
 Plug 'preservim/nerdcommenter'
+Plug 'liuchengxu/vista.vim'
 Plug 'jiangmiao/auto-pairs'
 Plug 'jeetsukumaran/vim-pythonsense'
-Plug 'sheerun/vim-polyglot'
+
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
 Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-surround'
-Plug 'ap/vim-buftabline'
+
 Plug 'wellle/targets.vim'
+Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}
 
 Plug 'itchyny/lightline.vim' " bottom status bar
 
@@ -91,11 +102,10 @@ if has('nvim')
 endif
 
 Plug 'Vimjas/vim-python-pep8-indent'
-Plug 'python-mode/python-mode', { 'for': 'python', 'branch': 'develop'  }
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'   }
 Plug 'junegunn/vim-peekaboo'
 
-" leader t - overview window
+" leader i - overview window
 Plug 'majutsushi/tagbar' 
 
 Plug 'lepture/vim-jinja'
@@ -106,6 +116,8 @@ Plug 'justinmk/vim-sneak'
 
 " list of recently opened files
 Plug 'mhinz/vim-startify'
+Plug 'jeetsukumaran/vim-buffergator'
+
 
 call plug#end()
 
@@ -118,7 +130,7 @@ if need_to_install_plugins == 1
 endif
 
 imap kj <ESC>
-colorscheme gruvbox
+colorscheme onedark
 highlight Normal guibg=none
 
 nmap <F6> i<C-R>=strftime("%Y-%m-%d %H:%M")<CR><Esc>
@@ -147,6 +159,7 @@ let g:ale_fixers = {
 
 nmap <F10> :ALEFix<CR>
 let g:ale_fix_on_save = 1
+let g:ale_disable_lsp = 1
 
 " Paste with <Shift> + <Insert>
 imap <S-Insert> <C-R>*"
@@ -167,7 +180,7 @@ nnoremap <leader>k :bnext<CR>
 nnoremap <leader>h :bfirst<CR>
 nnoremap <leader>l :blast<CR>
 
-nnoremap <leader>i :ls<CR>:b<Space>
+"nnoremap <leader>i :ls<CR>:b<Space>
 nnoremap <leader>dd :bd<CR>
 nnoremap <leader>q :q<CR>
 nnoremap <leader>w :write<CR>
@@ -235,7 +248,7 @@ map <C-e> <Plug>(ale_next_wrap)
 map <C-r> <Plug>(ale_previous_wrap)
 
 " tags
-map <leader>t :TagbarToggle<CR>
+map <leader>i :TagbarToggle<CR>
 
 " copy, cut and paste
 vmap <C-c> "+y
@@ -283,7 +296,11 @@ augroup exec_code
      
       autocmd FileType bash,sh nnoremap <buffer> <localleader>r 
                         \ :sp<CR> 
-                        \
+                        \ :term bash %<CR>
+                        \ :startinsert<CR>
+
+      autocmd FileType bash,sh nnoremap <buffer> <localleader>B 
+                        \ :term bash %<CR>
                         \ :startinsert<CR>
 augroup END
 
@@ -296,3 +313,47 @@ vnoremap <silent> <localleader> :WhichKeyVisual '\\'<CR>
 
 " sneak
 let g:sneak#label = 1
+
+au BufNewFile,BufRead *.py set foldmethod=indent
+
+nmap <silent> gd <Plug>(coc-definition)
+
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+
+
+nmap <leader>rn <Plug>(coc-rename)
+
+
+
+
+function! NearestMethodOrFunction() abort
+  return get(b:, 'vista_nearest_method_or_function', '')
+endfunction
+
+set statusline+=%{NearestMethodOrFunction()}
+
+" By default vista.vim never run if you don't call it explicitly.
+"
+" If you want to show the nearest function in your statusline automatically,
+" you can add the following line to your vimrc
+autocmd VimEnter * call vista#RunForNearestMethodOrFunction()
+
+
+
+let g:lightline = {
+      \ 'colorscheme': 'wombat',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ],
+      \             [ 'readonly', 'filename', 'modified', 'method' ] ]
+      \ },
+      \ 'component_function': {
+      \   'method': 'NearestMethodOrFunction'
+      \ },
+      \ }

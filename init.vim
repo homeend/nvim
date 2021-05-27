@@ -34,7 +34,7 @@ set nowrap
 set smartcase
 set noswapfile
 set nobackup
-set undodir=~/.vim/undodir
+set undodir=~/.nvim/undodir
 set undofile
 set incsearch
 set termguicolors
@@ -82,7 +82,7 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'jeetsukumaran/vim-pythonsense'
 
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-
+"Plug 'ycm-core/YouCompleteMe', { 'do': './install.py -all' }
 Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-surround'
 
@@ -117,7 +117,7 @@ Plug 'justinmk/vim-sneak'
 " list of recently opened files
 Plug 'mhinz/vim-startify'
 Plug 'jeetsukumaran/vim-buffergator'
-
+Plug 'vifm/vifm.vim'
 
 call plug#end()
 
@@ -316,9 +316,18 @@ let g:sneak#label = 1
 
 au BufNewFile,BufRead *.py set foldmethod=indent
 
-nmap <silent> gd <Plug>(coc-definition)
+" Use <c-space> to trigger completion.
+inoremap <silent><expr> <c-space> coc#refresh()
 
+" Remap keys for gotos
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Use K to show documentation in preview window
 nnoremap <silent> K :call <SID>show_documentation()<CR>
+
 function! s:show_documentation()
   if (index(['vim','help'], &filetype) >= 0)
     execute 'h '.expand('<cword>')
@@ -327,11 +336,11 @@ function! s:show_documentation()
   endif
 endfunction
 
-
+" Remap for rename current word
 nmap <leader>rn <Plug>(coc-rename)
 
-
-
+" Highlight symbol under cursor on CursorHold
+autocmd CursorHold * silent call CocActionAsync('highlight')
 
 function! NearestMethodOrFunction() abort
   return get(b:, 'vista_nearest_method_or_function', '')
@@ -357,3 +366,7 @@ let g:lightline = {
       \   'method': 'NearestMethodOrFunction'
       \ },
       \ }
+
+xnoremap K :move '<-2<CR>gv-gv
+xnoremap J :move '>+1<CR>gv-gv
+

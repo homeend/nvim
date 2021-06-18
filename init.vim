@@ -76,6 +76,7 @@ Plug 'joshdick/onedark.vim'
 Plug 'dense-analysis/ale'
 Plug 'scrooloose/nerdtree'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 Plug 'preservim/nerdcommenter'
 Plug 'liuchengxu/vista.vim'
 Plug 'jiangmiao/auto-pairs'
@@ -169,10 +170,12 @@ au FileType xml setlocal foldmethod=syntax
 
 set cursorline
 nnoremap <leader>li :set cursorline!<CR>
+nnoremap <leader>vv :vsplit<CR>  
 nnoremap <leader>ec :vsplit $MYVIMRC<CR>  
 nnoremap <leader>sc :source $MYVIMRC<CR>     
 nnoremap <leader>mmm mzggvGgq`z
 nnoremap <leader>ff :FZF<CR>
+nnoremap <leader>aa :Ag<CR>
 
 nnoremap <leader>a :<C-u>nohlsearch<CR><C-l>
 nnoremap <leader>j :bprevious<CR>

@@ -119,6 +119,7 @@ Plug 'justinmk/vim-sneak'
 Plug 'mhinz/vim-startify'
 Plug 'jeetsukumaran/vim-buffergator'
 Plug 'vifm/vifm.vim'
+Plug 'tpope/vim-unimpaired'
 
 call plug#end()
 

@@ -12,8 +12,7 @@ if uname == 'Linux' || uname == 'Darwin'
   endif
 else
   if empty(glob('~/AppData/Local/nvim/autoload/plug.vim'))
-      silent !curl -fLo ~/AppData/Local/nvim/autoload/plug.vim --create-dirs
-          \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+      silent exe "!curl -fLo " . $USERPROFILE . "/AppData/Local/nvim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
       let need_to_install_plugins = 1
   endif
 endif
@@ -119,7 +118,6 @@ Plug 'justinmk/vim-sneak'
 Plug 'mhinz/vim-startify'
 Plug 'jeetsukumaran/vim-buffergator'
 Plug 'vifm/vifm.vim'
-Plug 'tpope/vim-unimpaired'
 
 call plug#end()
 

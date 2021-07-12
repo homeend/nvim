@@ -178,12 +178,12 @@ nnoremap <leader>ec :vsplit $MYVIMRC<CR>
 nnoremap <leader>sc :source $MYVIMRC<CR>     
 nnoremap <leader>mmm mzggvGgq`z
 "nnoremap <leader>ff :FZF<CR>
+"nnoremap <leader>aa :Ag<CR>
+
 nnoremap <leader>ff <cmd>Telescope find_files<cr>
 nnoremap <leader>fg <cmd>Telescope live_grep<cr>
 nnoremap <leader>fb <cmd>Telescope buffers<cr>
 nnoremap <leader>fh <cmd>Telescope help_tags<cr>
-
-nnoremap <leader>aa :Ag<CR>
 
 nnoremap <leader>a :<C-u>nohlsearch<CR><C-l>
 nnoremap <leader>j :bprevious<CR>

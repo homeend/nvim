@@ -75,9 +75,13 @@ Plug 'ambv/black'
 Plug 'joshdick/onedark.vim'
 Plug 'dense-analysis/ale'
 Plug 'scrooloose/nerdtree'
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
-Plug 'preservim/nerdcommenter'
+"Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+"Plug 'junegunn/fzf.vim'
+Plug 'nvim-lua/popup.nvim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
+
+Plug 'preservim/nerdcommenter' 
 Plug 'liuchengxu/vista.vim'
 Plug 'jiangmiao/auto-pairs'
 Plug 'jeetsukumaran/vim-pythonsense'
@@ -174,7 +178,12 @@ nnoremap <leader>vv :vsplit<CR>
 nnoremap <leader>ec :vsplit $MYVIMRC<CR>  
 nnoremap <leader>sc :source $MYVIMRC<CR>     
 nnoremap <leader>mmm mzggvGgq`z
-nnoremap <leader>ff :FZF<CR>
+"nnoremap <leader>ff :FZF<CR>
+nnoremap <leader>ff <cmd>Telescope find_files<cr>
+nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+nnoremap <leader>fb <cmd>Telescope buffers<cr>
+nnoremap <leader>fh <cmd>Telescope help_tags<cr>
+
 nnoremap <leader>aa :Ag<CR>
 
 nnoremap <leader>a :<C-u>nohlsearch<CR><C-l>
